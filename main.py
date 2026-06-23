@@ -24,12 +24,79 @@ def choose_word():
 def display_word(word, guessed):
     return " ".join(letter if letter in guessed else "_" for letter in word) 
 
+HANGMAN = [
+    """
+   -----
+   |   |
+   O   |
+  /|\  |
+  / \  |
+       |
+=========""",
+    """
+   -----
+   |   |
+   O   |
+  /|\  |
+  /    |
+       |
+=========""",
+    """
+   -----
+   |   |
+   O   |
+  /|\  |
+       |
+       |
+=========""",
+    """
+   -----
+   |   |
+   O   |
+  /|   |
+       |
+       |
+=========""",
+    """
+   -----
+   |   |
+   O   |
+   |   |
+       |
+       |
+=========""",
+    """
+   -----
+   |   |
+   O   |
+       |
+       |
+       |
+=========""",
+    """
+   -----
+   |   |
+       |
+       |
+       |
+       |
+=========""",
+]
+
+def play_again(choice):
+    if choice == "y":
+        hangman()
+    else:
+        return
+
+
 def hangman():
     word = choose_word()
     guessed = set()
     lives = player_life_initial
     
     while lives > 0:
+        print(HANGMAN[lives])
         print(f"\n{display_word(word, guessed)}  | Lives: {lives}")
         guess = input("Guess a letter:").lower()
 
@@ -40,12 +107,17 @@ def hangman():
         elif guess in word:
             guessed.add(guess)
             if all(l in guessed for l in word):
-                print("You won! Word: {word}")
-                return
+                print(f"You won! Word: {word}")
+                choice = input("Want to play again? y/n? ").lower()
+                play_again(choice)
         else:
             guessed.add(guess)
             lives -= 1
             print(f"Wrong! Lives left: {lives}")
+
     print(f"You lost! Word: {word}")
+    choice = input("Want to play again? y/n? ").lower()
+    
+
 
 hangman()
